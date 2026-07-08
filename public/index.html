@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Salón Rúa — Reservá tu turno</title>
+
+<!-- Bootstrap 5 (CDN) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Tipografías: Fraunces (display, con carácter) + Inter (texto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:         #1c2620;
+    --bg-alt:     #243128;
+    --bg-card:    #2a382e;
+    --line:       rgba(240,233,222,0.14);
+    --cream:      #f0e9de;
+    --cream-dim:  #c9c2b6;
+    --gold:       #c9a227;
+    --gold-soft:  rgba(201,162,39,0.18);
+    --rose:       #d9a0a0;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display-font{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+
+  /* ===== NAVBAR ===== */
+  .navbar-salon{
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    padding:1.1rem 0;
+  }
+  .navbar-salon .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--cream);
+    letter-spacing:0.02em;
+  }
+  .navbar-salon .brand span{ color:var(--gold); }
+  .navbar-salon .nav-link{
+    color:var(--cream-dim) !important;
+    font-size:0.92rem;
+    margin:0 0.75rem;
+  }
+  .navbar-salon .nav-link:hover{ color:var(--cream) !important; }
+  .btn-gold{
+    background:var(--gold);
+    color:#1c2620;
+    font-weight:600;
+    border:none;
+    padding:0.55rem 1.4rem;
+    border-radius:2px;
+    letter-spacing:0.02em;
+  }
+  .btn-gold:hover{ background:#e0b632; color:#1c2620; }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:6rem 0 5rem;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .eyebrow{
+    color:var(--gold);
+    font-size:0.8rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5vw, 4.2rem);
+    line-height:1.05;
+    margin:1rem 0 1.3rem;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--rose);
+  }
+  .hero p.lead{
+    color:var(--cream-dim);
+    font-size:1.1rem;
+    max-width:32rem;
+  }
+
+  /* Ticket-de-turno: elemento firma, imita una ficha de reserva de salón */
+  .ticket{
+    background:var(--bg-alt);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:2rem;
+    position:relative;
+  }
+  .ticket::before, .ticket::after{
+    content:"";
+    position:absolute;
+    width:22px; height:22px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:50%;
+    top:50%;
+    transform:translateY(-50%);
+  }
+  .ticket::before{ left:-11px; }
+  .ticket::after{ right:-11px; }
+  .ticket .ticket-label{
+    font-size:0.72rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+  }
+  .ticket .ticket-title{
+    font-family:'Fraunces', serif;
+    font-size:1.4rem;
+    margin:0.3rem 0 1.2rem;
+  }
+  .ticket-row{
+    display:flex;
+    justify-content:space-between;
+    padding:0.6rem 0;
+    border-top:1px dashed var(--line);
+    font-size:0.92rem;
+  }
+  .ticket-row span:first-child{ color:var(--cream-dim); }
+
+  /* ===== SECTION LABELS ===== */
+  .section-eyebrow{
+    color:var(--gold);
+    font-size:0.78rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  section{ padding:5rem 0; }
+  .section-alt{ background:var(--bg-alt); }
+
+  /* ===== SERVICE CARDS ===== */
+  .card-servicio{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1.8rem;
+    height:100%;
+    transition:transform 0.15s ease, border-color 0.15s ease;
+  }
+  .card-servicio:hover{
+    transform:translateY(-4px);
+    border-color:var(--gold);
+  }
+  .card-servicio .precio{
+    font-family:'Fraunces', serif;
+    font-size:1.7rem;
+    color:var(--gold);
+  }
+  .card-servicio .duracion{
+    font-size:0.82rem;
+    color:var(--cream-dim);
+  }
+  .badge-oferta{
+    background:var(--rose);
+    color:#1c2620;
+    font-weight:600;
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    padding:0.35em 0.7em;
+  }
+
+  /* ===== STYLIST CARDS ===== */
+  .card-peluquero{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+    height:100%;
+  }
+  .card-peluquero .avatar{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:var(--gold-soft);
+    color:var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-size:1.3rem;
+    font-weight:600;
+  }
+  .card-peluquero .especialidad{
+    color:var(--rose);
+    font-size:0.85rem;
+  }
+
+  /* ===== BOOKING FORM ===== */
+  .form-reserva{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:2.5rem;
+  }
+  .form-reserva label{
+    color:var(--cream-dim);
+    font-size:0.85rem;
+    letter-spacing:0.03em;
+    margin-bottom:0.35rem;
+  }
+  .form-reserva .form-select,
+  .form-reserva .form-control{
+    background:var(--bg-alt);
+    border:1px solid var(--line);
+    color:var(--cream);
+    padding:0.65rem 0.9rem;
+    border-radius:2px;
+  }
+  .form-reserva .form-select:focus,
+  .form-reserva .form-control:focus{
+    background:var(--bg-alt);
+    color:var(--cream);
+    border-color:var(--gold);
+    box-shadow:0 0 0 0.2rem var(--gold-soft);
+  }
+  .form-reserva .form-select option{ color:#1c2620; }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:2.5rem 0;
+    color:var(--cream-dim);
+    font-size:0.85rem;
+  }
+
+  @media (max-width:767px){
+    .ticket{ margin-top:2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar navbar-salon navbar-expand-lg">
+    <div class="container">
+      <span class="brand">Salón <span>Rúa</span></span>
+      <div class="ms-auto d-none d-lg-flex align-items-center">
+        <a href="#servicios" class="nav-link">Servicios</a>
+        <a href="#equipo" class="nav-link">Equipo</a>
+        <a href="#reservar" class="nav-link">Reservar</a>
+        <a href="#reservar" class="btn btn-gold ms-2">Pedir turno</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="eyebrow">Reservas online</div>
+          <h1>Tu turno, <em>sin vueltas</em>.</h1>
+          <p class="lead">Elegí el servicio, el estilista y el horario que te queden bien. Nosotros nos encargamos del resto.</p>
+          <a href="#reservar" class="btn btn-gold mt-2">Reservar ahora</a>
+        </div>
+        <div class="col-lg-6">
+          <div class="ticket">
+            <div class="ticket-label">Ticket de turno</div>
+            <div class="ticket-title">Nro. TURNO-014</div>
+            <div class="ticket-row"><span>Cliente</span><span>Juan Pérez</span></div>
+            <div class="ticket-row"><span>Estilista</span><span>Ana Gómez</span></div>
+            <div class="ticket-row"><span>Servicio</span><span>Coloración</span></div>
+            <div class="ticket-row"><span>Día / Hora</span><span>Vie 10 · 15:00</span></div>
+            <div class="ticket-row"><span>Estado</span><span style="color:var(--gold)">Confirmado</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SERVICIOS ===== -->
+  <section id="servicios">
+    <div class="container">
+      <div class="section-eyebrow">Nuestro menú</div>
+      <h2 class="mb-5">Servicios</h2>
+      <div class="row g-4" id="catalogo-servicios">
+
+        <div class="col-md-4">
+          <div class="card-servicio">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h3 class="h5 mb-0">Corte clásico</h3>
+              <span class="badge-oferta">Popular</span>
+            </div>
+            <div class="duracion mb-3">30 min</div>
+            <div class="precio">$8.000</div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card-servicio">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h3 class="h5 mb-0">Coloración completa</h3>
+              <span class="badge-oferta">10% OFF</span>
+            </div>
+            <div class="duracion mb-3">90 min</div>
+            <div class="precio">$20.000</div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card-servicio">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h3 class="h5 mb-0">Peinado + brushing</h3>
+            </div>
+            <div class="duracion mb-3">45 min</div>
+            <div class="precio">$6.500</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EQUIPO ===== -->
+  <section id="equipo" class="section-alt">
+    <div class="container">
+      <div class="section-eyebrow">Conocé al equipo</div>
+      <h2 class="mb-5">Nuestros estilistas</h2>
+      <div class="row g-4" id="catalogo-peluqueros">
+
+        <div class="col-md-4">
+          <div class="card-peluquero p-4 d-flex align-items-center gap-3">
+            <div class="avatar">AG</div>
+            <div>
+              <h3 class="h6 mb-1">Ana Gómez</h3>
+              <div class="especialidad">Coloración</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card-peluquero p-4 d-flex align-items-center gap-3">
+            <div class="avatar">LP</div>
+            <div>
+              <h3 class="h6 mb-1">Lucas Paz</h3>
+              <div class="especialidad">Cortes clásicos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card-peluquero p-4 d-flex align-items-center gap-3">
+            <div class="avatar">MS</div>
+            <div>
+              <h3 class="h6 mb-1">Marina Sosa</h3>
+              <div class="especialidad">Peinados</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESERVAR ===== -->
+  <section id="reservar">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-7">
+          <div class="text-center mb-5">
+            <div class="section-eyebrow">Último paso</div>
+            <h2>Reservá tu turno</h2>
+          </div>
+
+          <form class="form-reserva" id="form-turno">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nombre">Nombre y apellido</label>
+                <input type="text" class="form-control" id="nombre" required>
+              </div>
+              <div class="col-md-6">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="col-md-6">
+                <label for="servicio">Servicio</label>
+                <select class="form-select" id="servicio" required>
+                  <option value="">Elegí un servicio</option>
+                  <option value="corte">Corte clásico — $8.000</option>
+                  <option value="color">Coloración completa — $20.000</option>
+                  <option value="peinado">Peinado + brushing — $6.500</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="peluquero">Estilista</label>
+                <select class="form-select" id="peluquero" required>
+                  <option value="">Elegí un estilista</option>
+                  <option value="ana">Ana Gómez</option>
+                  <option value="lucas">Lucas Paz</option>
+                  <option value="marina">Marina Sosa</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="dia">Día</label>
+                <input type="date" class="form-control" id="dia" required>
+              </div>
+              <div class="col-md-6">
+                <label for="hora">Hora</label>
+                <input type="time" class="form-control" id="hora" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-gold w-100 mt-4">Confirmar turno</button>
+            <div id="mensaje-turno" class="mt-3 text-center"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container d-flex justify-content-between flex-wrap gap-2">
+      <span>Salón Rúa — Sistema de reservas</span>
+      <span>Prácticas Profesionalizantes 2 · IFTS 16</span>
+    </div>
+  </footer>
+
+  <!-- Lógica de JavaScript (Actividad 2 / conexión con el backend) -->
+  <script src="app.js"></script>
+</body>
+</html>
