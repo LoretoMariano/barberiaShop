@@ -7,6 +7,7 @@ Thumbs.db
 
 # Variables de entorno (si las usás)
 .env
+*.sqlite
 
 # Archivos de configuración de VS Code (opcional)
 .vscode/
