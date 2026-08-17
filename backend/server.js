@@ -2,14 +2,15 @@ require('dotenv').config(); // 1. abrir la caja fuerte, ANTES que todo lo demás
 
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const sequelize = require('./src/config/database'); // 2. traer la conexión
 
 const serviciosRoutes = require("./src/routes/serviciosRoutes");
 const peluquerosRoutes = require("./src/routes/peluquerosRoutes");
 const turnosRoutes = require("./src/routes/turnosRoutes");
 
-app.use(express.static("public"));
 app.use(express.json());
+app.use(cors()); // 3. habilitar CORS para todas las rutas  
 
 app.use("/api/servicios", serviciosRoutes);
 app.use("/api/peluqueros", peluquerosRoutes);

@@ -13,7 +13,7 @@ const Servicio = sequelize.define('Servicio', {
     allowNull: false
   },
   tiempo: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false
   }
 });

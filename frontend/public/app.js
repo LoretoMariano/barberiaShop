@@ -1,5 +1,5 @@
 async function cargarServicios() {
-  const respuesta = await fetch("/api/servicios");
+  const respuesta = await fetch("http://localhost:3000/api/servicios");
   const servicios = await respuesta.json();
 
   const contenedor = document.getElementById("catalogo-servicios"); // 1. agarro la "bandeja vacía"
@@ -24,13 +24,8 @@ async function cargarServicios() {
 
 const form = document.getElementById("form-turno");
 
-form.addEventListener("submit", (evento) => {
-  evento.preventDefault();
-  console.log("Formulario interceptado, no se recargó la página");
-});
-
 async function cargarPeluqueros() {
-  const respuesta = await fetch("/api/peluqueros"); // 1. hago la petición al servidor
+  const respuesta = await fetch("http://localhost:3000/api/peluqueros"); // 1. hago la petición al servidor
   const peluqueros = await respuesta.json(); // 2. obtengo la respuesta en formato JSON
 
   const contenedor = document.getElementById("catalogo-peluqueros"); // 3. agarro la "bandeja vacía"
@@ -72,7 +67,7 @@ form.addEventListener("submit", async (evento) => {
   const nuevoTurno = { nombre, email, servicioId, peluqueroId, dia, hora };
 
   try {
-    const respuesta = await fetch("/api/turnos", {
+    const respuesta = await fetch("http://localhost:3000/api/turnos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(nuevoTurno)
